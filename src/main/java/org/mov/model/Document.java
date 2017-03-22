@@ -2,13 +2,12 @@ package org.mov.model;
 
 import java.util.List;
 
-public class Document extends BaseEntity {
+public class Document extends MonitoredEntity {
     protected String title;
     protected String description;
     protected DocumentType type;
     protected Country country;
     protected Theme theme;
-    protected User userPosted;
     protected List<Tag> tags;
 
     public String getTitle() {
@@ -49,14 +48,6 @@ public class Document extends BaseEntity {
 
     public void setTheme(Theme theme) {
         this.theme = theme;
-    }
-
-    public User getUserPosted() {
-        return userPosted;
-    }
-
-    public void setUserPosted(User userPosted) {
-        this.userPosted = userPosted;
     }
 
     public List<Tag> getTags() {

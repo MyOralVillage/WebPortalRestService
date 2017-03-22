@@ -1,6 +1,6 @@
 package org.mov.model;
 
-public class Theme {
+public class Theme extends BaseEntity {
     protected String name;
     protected String description;
 
