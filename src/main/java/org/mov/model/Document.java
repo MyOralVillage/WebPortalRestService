@@ -1,14 +1,31 @@
 package org.mov.model;
 
-import java.util.List;
+import javax.persistence.*;
+import java.util.Set;
 
+@Entity
 public class Document extends MonitoredEntity {
+    @Column(nullable = false)
     protected String title;
     protected String description;
+
+    @Enumerated(EnumType.STRING)
     protected DocumentType type;
+
+    @ManyToOne
+    @JoinColumn(name = "COUNTRY_ID")
     protected Country country;
+
+    @ManyToOne
+    @JoinColumn(name = "THEME_ID")
     protected Theme theme;
-    protected List<Tag> tags;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "DOCUMENT_TAG",
+            joinColumns = @JoinColumn(name = "DOCUMENT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "TAG_ID"))
+    @Enumerated(EnumType.STRING)
+    protected Set<Tag> tags;
 
     public String getTitle() {
         return title;
@@ -50,11 +67,11 @@ public class Document extends MonitoredEntity {
         this.theme = theme;
     }
 
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 }

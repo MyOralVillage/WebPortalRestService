@@ -1,5 +1,8 @@
 package org.mov.model;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Theme extends BaseEntity {
     protected String name;
     protected String description;

@@ -1,6 +1,11 @@
 package org.mov.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class Country extends BaseEntity {
+    @Column(nullable = false)
     protected String name;
     protected String currency;
 

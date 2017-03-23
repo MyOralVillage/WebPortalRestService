@@ -1,11 +1,24 @@
 package org.mov.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@MappedSuperclass
 public abstract class MonitoredEntity extends BaseEntity {
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
     protected Date dateCreated;
+
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
     protected Date dateUpdated;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_CREATED_ID", nullable = false)
     protected User userCreated;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_UPDATED_ID", nullable = false)
     protected User userUpdated;
 
     public Date getDateCreated() {

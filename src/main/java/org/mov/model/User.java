@@ -1,9 +1,20 @@
 package org.mov.model;
 
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 public class User extends BaseEntity {
+    @Column(nullable = false)
     protected String username;
+
+    @Column(nullable = false)
     protected String password;
+
+    @Column(nullable = false)
     protected String email;
+
+    @Enumerated(EnumType.STRING)
     protected UserRole role;
 
     public String getUsername() {
