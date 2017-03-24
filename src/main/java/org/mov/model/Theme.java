@@ -1,11 +1,15 @@
 package org.mov.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
 public class Theme extends BaseEntity {
-    protected String name;
-    protected String description;
+    @Column(name = "NAME", nullable = false)
+    private String name;
+
+    @Column(name = "DESCRIPTION")
+    private String description;
 
     public String getName() {
         return name;

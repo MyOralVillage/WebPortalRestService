@@ -1,21 +1,46 @@
 package org.mov.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+@Entity
 public class User extends BaseEntity {
-    @Column(nullable = false)
-    protected String username;
+    @Column(name = "FIRST_NAME", nullable = false)
+    private String firstName;
 
-    @Column(nullable = false)
-    protected String password;
+    @Column(name = "LAST_NAME", nullable = false)
+    private String lastName;
 
-    @Column(nullable = false)
-    protected String email;
+    @Column(name = "USERNAME", nullable = false)
+    private String username;
+
+    @Column(name = "PASSWORD", nullable = false)
+    private String password;
+
+    @Column(name = "EMAIL", nullable = false)
+    private String email;
 
     @Enumerated(EnumType.STRING)
-    protected UserRole role;
+    @Column(name = "ROLE", nullable = false)
+    private UserRole role;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public String getUsername() {
         return username;

@@ -5,21 +5,21 @@ import java.util.Date;
 
 @MappedSuperclass
 public abstract class MonitoredEntity extends BaseEntity {
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    protected Date dateCreated;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DATE_CREATED", nullable = false)
+    private Date dateCreated;
 
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    protected Date dateUpdated;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DATE_UPDATED", nullable = false)
+    private Date dateUpdated;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_CREATED_ID", nullable = false)
-    protected User userCreated;
+    private User userCreated;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_UPDATED_ID", nullable = false)
-    protected User userUpdated;
+    private User userUpdated;
 
     public Date getDateCreated() {
         return dateCreated;

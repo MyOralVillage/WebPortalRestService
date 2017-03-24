@@ -5,27 +5,29 @@ import java.util.Set;
 
 @Entity
 public class Document extends MonitoredEntity {
-    @Column(nullable = false)
-    protected String title;
-    protected String description;
+    @Column(name = "TITLE", nullable = false)
+    private String title;
+
+    @Column(name = "DESCRIPTION", nullable = false)
+    private String description;
 
     @Enumerated(EnumType.STRING)
-    protected DocumentType type;
+    @Column(name = "TYPE", nullable = false)
+    private DocumentType type;
 
     @ManyToOne
-    @JoinColumn(name = "COUNTRY_ID")
-    protected Country country;
+    @JoinColumn(name = "COUNTRY_ID", nullable = false)
+    private Country country;
 
     @ManyToOne
-    @JoinColumn(name = "THEME_ID")
-    protected Theme theme;
+    @JoinColumn(name = "THEME_ID", nullable = false)
+    private Theme theme;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "DOCUMENT_TAG",
-            joinColumns = @JoinColumn(name = "DOCUMENT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "TAG_ID"))
-    @Enumerated(EnumType.STRING)
-    protected Set<Tag> tags;
+    @JoinTable(name = "DocumentTag",
+            joinColumns = @JoinColumn(name = "DOCUMENT_ID", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "TAG_ID", nullable = false))
+    private Set<Tag> tags;
 
     public String getTitle() {
         return title;

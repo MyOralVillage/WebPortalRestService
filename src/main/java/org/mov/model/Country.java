@@ -5,9 +5,11 @@ import javax.persistence.Entity;
 
 @Entity
 public class Country extends BaseEntity {
-    @Column(nullable = false)
-    protected String name;
-    protected String currency;
+    @Column(name = "NAME", nullable = false)
+    private String name;
+
+    @Column(name = "CURRENCY", nullable = false)
+    private String currency;
 
     public String getName() {
         return name;
