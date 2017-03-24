@@ -1,0 +1,28 @@
+package org.mov.config;
+
+import org.mov.repository.DocumentRepository;
+import org.mov.repository.UserRepository;
+import org.mov.repository.jpa.JpaDocumentRepository;
+import org.mov.repository.jpa.JpaUserRepository;
+import org.mov.service.MOVService;
+import org.mov.service.MOVServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class MOVTestConfig {
+    @Bean
+    public UserRepository userRepository() {
+        return new JpaUserRepository();
+    }
+
+    @Bean
+    public DocumentRepository documentRepository() {
+        return new JpaDocumentRepository();
+    }
+
+    @Bean
+    public MOVService movService(UserRepository userRepository, DocumentRepository documentRepository) {
+        return new MOVServiceImpl(userRepository, documentRepository);
+    }
+}
