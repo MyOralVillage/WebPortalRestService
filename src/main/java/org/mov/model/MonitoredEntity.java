@@ -13,11 +13,11 @@ public abstract class MonitoredEntity extends BaseEntity {
     @Column(name = "DATE_UPDATED", nullable = false)
     private Date dateUpdated;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USER_CREATED_ID", nullable = false)
     private User userCreated;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USER_UPDATED_ID", nullable = false)
     private User userUpdated;
 

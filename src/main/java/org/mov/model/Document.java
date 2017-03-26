@@ -23,7 +23,7 @@ public class Document extends MonitoredEntity {
     @JoinColumn(name = "THEME_ID", nullable = false)
     private Theme theme;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "DocumentTag",
             joinColumns = @JoinColumn(name = "DOCUMENT_ID", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "TAG_ID", nullable = false))
