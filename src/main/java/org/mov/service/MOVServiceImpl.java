@@ -64,9 +64,13 @@ public class MOVServiceImpl implements MOVService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Document findDocumentById(Long id) {
         return documentRepository.findDocumentById(id);
+    }
+
+    @Override
+    public Collection<Document> findAllDocuments() {
+        return documentRepository.findAllDocuments();
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collection;
 
 @Repository
 public class JpaDocumentRepository implements DocumentRepository {
@@ -29,5 +30,10 @@ public class JpaDocumentRepository implements DocumentRepository {
     @Override
     public Document findDocumentById(Long id) {
         return em.find(Document.class, id);
+    }
+
+    @Override
+    public Collection<Document> findAllDocuments() {
+        return em.createQuery("SELECT document FROM Document document").getResultList();
     }
 }

@@ -22,6 +22,8 @@ public interface MOVService {
 
     Document findDocumentById(Long id);
 
+    Collection<Document> findAllDocuments();
+
     void saveTheme(Theme theme);
 
     void removeTheme(Theme theme);
