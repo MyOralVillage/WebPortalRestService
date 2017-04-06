@@ -1,13 +1,7 @@
 package org.mov.service;
 
-import org.mov.model.Country;
-import org.mov.model.Document;
-import org.mov.model.Theme;
-import org.mov.model.User;
-import org.mov.repository.CountryRepository;
-import org.mov.repository.DocumentRepository;
-import org.mov.repository.ThemeRepository;
-import org.mov.repository.UserRepository;
+import org.mov.model.*;
+import org.mov.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,16 +15,22 @@ public class MOVServiceImpl implements MOVService {
     private UserRepository userRepository;
     private ThemeRepository themeRepository;
     private CountryRepository countryRepository;
+    private DocumentTypeRepository documentTypeRepository;
+    private TagRepository tagRepository;
 
     @Autowired
     public MOVServiceImpl(UserRepository userRepository,
                           DocumentRepository documentRepository,
                           ThemeRepository themeRepository,
-                          CountryRepository countryRepository) {
+                          CountryRepository countryRepository,
+                          DocumentTypeRepository documentTypeRepository,
+                          TagRepository tagRepository) {
         this.userRepository = userRepository;
         this.documentRepository = documentRepository;
         this.themeRepository = themeRepository;
         this.countryRepository = countryRepository;
+        this.documentTypeRepository = documentTypeRepository;
+        this.tagRepository = tagRepository;
     }
 
     @Override
@@ -121,5 +121,55 @@ public class MOVServiceImpl implements MOVService {
     @Override
     public Collection<Country> findAllCountries() {
         return countryRepository.findAllCountries();
+    }
+
+    @Override
+    public void saveDocumentType(DocumentType documentType) {
+        documentTypeRepository.saveDocumentType(documentType);
+    }
+
+    @Override
+    public void removeDocumentType(DocumentType documentType) {
+        documentTypeRepository.removeDocumentType(documentType);
+    }
+
+    @Override
+    public DocumentType findDocumentTypeById(Long id) {
+        return documentTypeRepository.findDocumentTypeById(id);
+    }
+
+    @Override
+    public DocumentType findDocumentTypeByName(String name) {
+        return documentTypeRepository.findDocumentTypeByName(name);
+    }
+
+    @Override
+    public Collection<DocumentType> findAllDocumentTypes() {
+        return documentTypeRepository.findAllDocumentTypes();
+    }
+
+    @Override
+    public void saveTag(Tag tag) {
+        tagRepository.saveTag(tag);
+    }
+
+    @Override
+    public void removeTag(Tag tag) {
+        tagRepository.removeTag(tag);
+    }
+
+    @Override
+    public Tag findTagById(Long id) {
+        return tagRepository.findTagById(id);
+    }
+
+    @Override
+    public Tag findTagByName(String name) {
+        return tagRepository.findTagByName(name);
+    }
+
+    @Override
+    public Collection<Tag> findAllTags() {
+        return tagRepository.findAllTags();
     }
 }
