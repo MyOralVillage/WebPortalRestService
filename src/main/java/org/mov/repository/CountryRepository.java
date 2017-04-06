@@ -1,6 +1,6 @@
 package org.mov.repository;
 
-import org.mov.model.Country;
+import org.mov.entity.Country;
 
 import java.util.Collection;
 

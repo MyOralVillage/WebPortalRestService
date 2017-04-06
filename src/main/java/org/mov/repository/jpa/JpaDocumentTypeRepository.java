@@ -1,6 +1,6 @@
 package org.mov.repository.jpa;
 
-import org.mov.model.DocumentType;
+import org.mov.entity.DocumentType;
 import org.mov.repository.DocumentTypeRepository;
 import org.springframework.stereotype.Repository;
 

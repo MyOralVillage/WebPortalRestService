@@ -1,6 +1,6 @@
 package org.mov.service;
 
-import org.mov.model.*;
+import org.mov.entity.*;
 import org.mov.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

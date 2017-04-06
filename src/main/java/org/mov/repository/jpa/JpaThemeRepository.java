@@ -1,6 +1,6 @@
 package org.mov.repository.jpa;
 
-import org.mov.model.Theme;
+import org.mov.entity.Theme;
 import org.mov.repository.ThemeRepository;
 import org.springframework.stereotype.Repository;
 

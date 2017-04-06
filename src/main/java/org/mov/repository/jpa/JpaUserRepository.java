@@ -1,6 +1,6 @@
 package org.mov.repository.jpa;
 
-import org.mov.model.User;
+import org.mov.entity.User;
 import org.mov.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 

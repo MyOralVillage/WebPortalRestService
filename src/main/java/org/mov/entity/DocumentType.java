@@ -1,10 +1,10 @@
-package org.mov.model;
+package org.mov.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class UserRole extends BaseEntity {
+public class DocumentType extends BaseEntity {
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 

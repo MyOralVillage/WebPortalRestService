@@ -1,6 +1,6 @@
 package org.mov.repository.jpa;
 
-import org.mov.model.Country;
+import org.mov.entity.Country;
 import org.mov.repository.CountryRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package org.mov.repository;
 
-import org.mov.model.User;
+import org.mov.entity.User;
 
 public interface UserRepository {
     void saveUser(User user);

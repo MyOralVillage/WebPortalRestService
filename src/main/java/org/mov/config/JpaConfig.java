@@ -42,7 +42,7 @@ public class JpaConfig {
         LocalContainerEntityManagerFactoryBean emfb = new LocalContainerEntityManagerFactoryBean();
         emfb.setDataSource(dataSource);
         emfb.setJpaVendorAdapter(jpaVendorAdapter);
-        emfb.setPackagesToScan("org.mov.model");
+        emfb.setPackagesToScan("org.mov.entity");
         return emfb;
     }
 

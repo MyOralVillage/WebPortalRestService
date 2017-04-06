@@ -1,6 +1,6 @@
 package org.mov.repository;
 
-import org.mov.model.Theme;
+import org.mov.entity.Theme;
 
 import java.util.Collection;
 

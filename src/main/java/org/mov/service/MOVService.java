@@ -1,6 +1,6 @@
 package org.mov.service;
 
-import org.mov.model.*;
+import org.mov.entity.*;
 
 import java.util.Collection;
 

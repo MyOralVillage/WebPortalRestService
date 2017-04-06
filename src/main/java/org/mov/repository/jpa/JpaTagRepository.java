@@ -1,6 +1,6 @@
 package org.mov.repository.jpa;
 
-import org.mov.model.Tag;
+import org.mov.entity.Tag;
 import org.mov.repository.TagRepository;
 import org.springframework.stereotype.Repository;
 

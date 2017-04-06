@@ -1,6 +1,6 @@
 package org.mov.api;
 
-import org.mov.model.Country;
+import org.mov.entity.Country;
 import org.mov.service.MOVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

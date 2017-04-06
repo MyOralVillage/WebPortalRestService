@@ -1,4 +1,4 @@
-package org.mov.model;
+package org.mov.entity;
 
 import javax.persistence.*;
 import java.util.Set;

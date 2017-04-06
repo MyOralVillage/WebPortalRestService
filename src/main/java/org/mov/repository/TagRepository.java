@@ -1,6 +1,6 @@
 package org.mov.repository;
 
-import org.mov.model.Tag;
+import org.mov.entity.Tag;
 
 import java.util.Collection;
 

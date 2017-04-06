@@ -1,6 +1,6 @@
 package org.mov.api;
 
-import org.mov.model.DocumentType;
+import org.mov.entity.DocumentType;
 import org.mov.service.MOVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,6 +1,6 @@
 package org.mov.repository;
 
-import org.mov.model.Document;
+import org.mov.entity.Document;
 
 import java.util.Collection;
 
