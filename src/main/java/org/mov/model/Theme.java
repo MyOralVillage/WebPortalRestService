@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class Theme extends BaseEntity {
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
     @Column(name = "DESCRIPTION")
@@ -16,7 +16,7 @@ public class Theme extends BaseEntity {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.toUpperCase();
     }
 
     public String getDescription() {

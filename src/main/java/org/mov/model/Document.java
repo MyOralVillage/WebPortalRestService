@@ -11,8 +11,8 @@ public class Document extends MonitoredEntity {
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "TYPE", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "TYPE_ID", nullable = false)
     private DocumentType type;
 
     @ManyToOne
@@ -23,7 +23,7 @@ public class Document extends MonitoredEntity {
     @JoinColumn(name = "THEME_ID", nullable = false)
     private Theme theme;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "DocumentTag",
             joinColumns = @JoinColumn(name = "DOCUMENT_ID", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "TAG_ID", nullable = false))

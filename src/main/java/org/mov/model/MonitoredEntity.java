@@ -1,32 +1,34 @@
 package org.mov.model;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Date;
 
 @MappedSuperclass
 public abstract class MonitoredEntity extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DATE_CREATED", nullable = false)
-    private Date dateCreated;
+    protected Date dateCreated;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DATE_UPDATED", nullable = false)
-    private Date dateUpdated;
+    protected Date dateUpdated;
 
     @ManyToOne
     @JoinColumn(name = "USER_CREATED_ID", nullable = false)
-    private User userCreated;
+    protected User userCreated;
 
     @ManyToOne
     @JoinColumn(name = "USER_UPDATED_ID", nullable = false)
-    private User userUpdated;
+    protected User userUpdated;
+
+    public MonitoredEntity() {
+        this.dateCreated = Date.from(Instant.now());
+        this.dateUpdated = Date.from(Instant.now());
+    }
 
     public Date getDateCreated() {
         return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
     }
 
     public Date getDateUpdated() {

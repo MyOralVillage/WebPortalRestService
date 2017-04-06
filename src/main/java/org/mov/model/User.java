@@ -2,8 +2,8 @@ package org.mov.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class User extends BaseEntity {
@@ -13,17 +13,17 @@ public class User extends BaseEntity {
     @Column(name = "LAST_NAME", nullable = false)
     private String lastName;
 
-    @Column(name = "USERNAME", nullable = false)
+    @Column(name = "USERNAME", nullable = false, unique = true)
     private String username;
 
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ROLE", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "ROLE_ID", nullable = false)
     private UserRole role;
 
     public String getFirstName() {
