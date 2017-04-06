@@ -3,6 +3,7 @@ package org.mov.api;
 import org.mov.model.Country;
 import org.mov.service.MOVService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,5 +24,10 @@ public class CountryController {
     @RequestMapping(method = RequestMethod.GET)
     public List<Country> showCountries() {
         return new ArrayList<>(movService.findAllCountries());
+    }
+
+    @RequestMapping(value = "/new", method = RequestMethod.POST, consumes = "application/json")
+    public void saveNewDocument(@RequestBody Country country) {
+        movService.saveCountry(country);
     }
 }
