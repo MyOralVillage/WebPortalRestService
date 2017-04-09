@@ -1,9 +1,7 @@
 package org.mov.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User extends BaseEntity {
@@ -22,9 +20,9 @@ public class User extends BaseEntity {
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "ROLE_ID", nullable = false)
-    private UserRole role;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    private List<UserRole> roles;
 
     public String getFirstName() {
         return firstName;
@@ -66,11 +64,11 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
-    public UserRole getRole() {
-        return role;
+    public List<UserRole> getRoles() {
+        return roles;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setRoles(List<UserRole> roles) {
+        this.roles = roles;
     }
 }

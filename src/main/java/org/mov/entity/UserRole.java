@@ -1,18 +1,41 @@
 package org.mov.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class UserRole extends BaseEntity {
-    @Column(name = "NAME", nullable = false, unique = true)
-    private String name;
+public class UserRole {
+    @EmbeddedId
+    private Id id = new Id();
 
-    public String getName() {
-        return name;
+    public UserRole() {
     }
 
-    public void setName(String name) {
-        this.name = name.toUpperCase();
+    public UserRole(String roleName) {
+        id.role = Role.valueOf(roleName);
+    }
+
+    public Long getUserId() {
+        return id.userId;
+    }
+
+    public void setUserId(Long id) {
+        this.id.userId = id;
+    }
+
+    public Role getRole() {
+        return id.role;
+    }
+
+    @Embeddable
+    private static class Id implements Serializable {
+        private static final long serialVersionUID = 1322120000551624359L;
+
+        @Column(name = "USER_ID")
+        private Long userId;
+
+        @Enumerated(EnumType.STRING)
+        @Column(name = "ROLE")
+        private Role role;
     }
 }
