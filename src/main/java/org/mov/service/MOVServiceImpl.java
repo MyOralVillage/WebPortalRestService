@@ -54,6 +54,11 @@ public class MOVServiceImpl implements MOVService {
     }
 
     @Override
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
+
+    @Override
     public void saveDocument(Document document) {
         documentRepository.saveDocument(document);
     }

@@ -13,6 +13,8 @@ public interface MOVService {
 
     User findUserByEmail(String email);
 
+    User findUserByUsername(String username);
+
     void saveDocument(Document document);
 
     void removeDocument(Document document);
