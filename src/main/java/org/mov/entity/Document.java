@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 public class Document extends MonitoredEntity {
-    @Column(name = "TITLE", nullable = false)
+    @Column(name = "TITLE", nullable = false, unique = true)
     private String title;
 
     @Column(name = "DESCRIPTION", nullable = false)

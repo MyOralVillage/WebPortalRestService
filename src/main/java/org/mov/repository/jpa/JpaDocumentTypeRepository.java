@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 public class JpaDocumentTypeRepository implements DocumentTypeRepository {
@@ -37,7 +38,9 @@ public class JpaDocumentTypeRepository implements DocumentTypeRepository {
     public DocumentType findDocumentTypeByName(String name) {
         Query query = em.createQuery("SELECT docType FROM DocumentType docType WHERE docType.name =:name");
         query.setParameter("name", name);
-        return (DocumentType) query.getSingleResult();
+        List<DocumentType> list = query.getResultList();
+        if (list.size() != 1) return null;
+        else return list.get(0);
     }
 
     @Override
