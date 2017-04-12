@@ -11,6 +11,9 @@ public class Document extends MonitoredEntity {
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
+    @Column(name = "FILE_EXTENSION", nullable = false)
+    private String fileExtension;
+
     @ManyToOne
     @JoinColumn(name = "TYPE_ID", nullable = false)
     private DocumentType type;
@@ -43,6 +46,14 @@ public class Document extends MonitoredEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
     }
 
     public DocumentType getType() {
