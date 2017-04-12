@@ -10,10 +10,7 @@ import org.mov.model.file.FileIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Date;
 
 public class DropboxFileIO implements FileIO {
@@ -38,6 +35,11 @@ public class DropboxFileIO implements FileIO {
     public void uploadFile(File fileToUpload, String path) throws Exception {
         if (fileToUpload.length() >= chunckedUploadSize) chunckedFileUpload(fileToUpload, path);
         else singleFileUpload(fileToUpload, path);
+    }
+
+    @Override
+    public void downloadFile(OutputStream outputStream, String path) throws Exception {
+        this.client.files().downloadBuilder(path).download(outputStream);
     }
 
     private void singleFileUpload(File fileToUpload, String dropboxPath) throws Exception {

@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -100,12 +102,9 @@ public class DocumentController {
     @RequestMapping(value = "/upload/{id}", method = RequestMethod.POST)
     public void uploadDocumentFile(@PathVariable("id") Long id,
                                    @RequestParam("file") MultipartFile file) {
-        String filename = file.getOriginalFilename();
-        String extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length());
-
         Document document = movService.findDocumentById(id);
         String path = String.format("/%s/%s/%s/%s.%s", document.getCountry().getName(), document.getTheme().getName(),
-                document.getType().getName(), document.getTitle(), extension);
+                document.getType().getName(), document.getTitle(), document.getFileExtension());
 
         Path uploadFile = Paths.get("temp" + path);
 
@@ -125,6 +124,21 @@ public class DocumentController {
                 LOGGER.error(e.getMessage());
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    @RequestMapping(value = "/download/{id}", method = RequestMethod.GET)
+    public void getFile(@PathVariable("id") Long id, HttpServletResponse response) {
+        Document document = movService.findDocumentById(id);
+        String path = String.format("/%s/%s/%s/%s.%s", document.getCountry().getName(), document.getTheme().getName(),
+                document.getType().getName(), document.getTitle(), document.getFileExtension());
+
+        try {
+            OutputStream outputStream = response.getOutputStream();
+            fileIoHandler.downloadFile(outputStream, path);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }
