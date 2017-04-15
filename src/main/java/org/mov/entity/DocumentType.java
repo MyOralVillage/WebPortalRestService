@@ -8,6 +8,13 @@ public class DocumentType extends BaseEntity {
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
+    public DocumentType() {
+    }
+
+    public DocumentType(String name) {
+        setName(name);
+    }
+
     public String getName() {
         return name;
     }

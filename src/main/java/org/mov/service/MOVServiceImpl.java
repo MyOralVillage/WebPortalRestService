@@ -17,6 +17,7 @@ public class MOVServiceImpl implements MOVService {
     private CountryRepository countryRepository;
     private DocumentTypeRepository documentTypeRepository;
     private TagRepository tagRepository;
+    private SubCategoryRepository subCategoryRepository;
 
     @Autowired
     public MOVServiceImpl(UserRepository userRepository,
@@ -24,13 +25,15 @@ public class MOVServiceImpl implements MOVService {
                           ThemeRepository themeRepository,
                           CountryRepository countryRepository,
                           DocumentTypeRepository documentTypeRepository,
-                          TagRepository tagRepository) {
+                          TagRepository tagRepository,
+                          SubCategoryRepository subCategoryRepository) {
         this.userRepository = userRepository;
         this.documentRepository = documentRepository;
         this.themeRepository = themeRepository;
         this.countryRepository = countryRepository;
         this.documentTypeRepository = documentTypeRepository;
         this.tagRepository = tagRepository;
+        this.subCategoryRepository = subCategoryRepository;
     }
 
     @Override
@@ -176,5 +179,30 @@ public class MOVServiceImpl implements MOVService {
     @Override
     public Collection<Tag> findAllTags() {
         return tagRepository.findAllTags();
+    }
+
+    @Override
+    public void saveSubCategory(SubCategory subCategory) {
+        subCategoryRepository.saveSubCategory(subCategory);
+    }
+
+    @Override
+    public void removeSubCategory(SubCategory subCategory) {
+        subCategoryRepository.removeSubCategory(subCategory);
+    }
+
+    @Override
+    public SubCategory findSubCategoryById(Long id) {
+        return subCategoryRepository.findSubCategoryById(id);
+    }
+
+    @Override
+    public SubCategory findSubcategoryByName(String name) {
+        return subCategoryRepository.findSubcategoryByName(name);
+    }
+
+    @Override
+    public Collection<SubCategory> findAllSubCategories() {
+        return subCategoryRepository.findAllSubCategories();
     }
 }

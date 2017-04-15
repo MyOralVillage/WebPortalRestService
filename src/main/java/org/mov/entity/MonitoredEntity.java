@@ -12,11 +12,11 @@ public abstract class MonitoredEntity extends BaseEntity {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DATE_UPDATED", nullable = false)
-    protected Date dateUpdated;
+    protected Date dateModified;
 
     @ManyToOne
     @JoinColumn(name = "USER_CREATED_ID", nullable = false)
-    protected User userCreated;
+    protected User postedBy;
 
     @ManyToOne
     @JoinColumn(name = "USER_UPDATED_ID", nullable = false)
@@ -24,27 +24,27 @@ public abstract class MonitoredEntity extends BaseEntity {
 
     public MonitoredEntity() {
         this.dateCreated = Date.from(Instant.now());
-        this.dateUpdated = Date.from(Instant.now());
+        this.dateModified = Date.from(Instant.now());
     }
 
     public Date getDateCreated() {
         return dateCreated;
     }
 
-    public Date getDateUpdated() {
-        return dateUpdated;
+    public Date getDateModified() {
+        return dateModified;
     }
 
-    public void setDateUpdated(Date dateUpdated) {
-        this.dateUpdated = dateUpdated;
+    public void setDateModified(Date dateModified) {
+        this.dateModified = dateModified;
     }
 
-    public User getUserCreated() {
-        return userCreated;
+    public User getPostedBy() {
+        return postedBy;
     }
 
-    public void setUserCreated(User userCreated) {
-        this.userCreated = userCreated;
+    public void setPostedBy(User postedBy) {
+        this.postedBy = postedBy;
     }
 
     public User getUserUpdated() {

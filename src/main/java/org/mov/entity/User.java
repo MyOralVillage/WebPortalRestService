@@ -24,6 +24,13 @@ public class User extends BaseEntity {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private List<UserRole> roles;
 
+    public User() {
+    }
+
+    public User(String email) {
+        this.email = email;
+    }
+
     public String getFirstName() {
         return firstName;
     }

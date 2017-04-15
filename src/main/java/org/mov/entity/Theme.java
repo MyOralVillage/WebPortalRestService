@@ -11,6 +11,13 @@ public class Theme extends BaseEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    public Theme() {
+    }
+
+    public Theme(String name) {
+        setName(name);
+    }
+
     public String getName() {
         return name;
     }

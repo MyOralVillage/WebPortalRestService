@@ -62,4 +62,14 @@ public interface MOVService {
     Tag findTagByName(String name);
 
     Collection<Tag> findAllTags();
+
+    void saveSubCategory(SubCategory subCategory);
+
+    void removeSubCategory(SubCategory subCategory);
+
+    SubCategory findSubCategoryById(Long id);
+
+    SubCategory findSubcategoryByName(String name);
+
+    Collection<SubCategory> findAllSubCategories();
 }

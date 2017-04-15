@@ -16,13 +16,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("api/document")
+@RequestMapping("/api/contentItems")
 public class DocumentController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentController.class);
 
@@ -37,23 +38,41 @@ public class DocumentController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Document> showDocumentList(
+            @RequestParam(value = "subCategoryName", required = false) final String subCategoryName,
+            @RequestParam(value = "subCategoryValue", required = false) final String subCategoryValue,
+            @RequestParam(value = "postedBy", required = false) final String postedBy,
+            @RequestParam(value = "category", required = false) final String category,
             @RequestParam(value = "theme", required = false) final String theme,
             @RequestParam(value = "country", required = false) final String country,
-            @RequestParam(value = "documentType", required = false) final String documentType) {
+            @RequestParam(value = "sortBy", required = false) final String sortBy,
+            @RequestParam(value = "sortAsc", required = false) final Boolean sortAsc,
+            @RequestParam(value = "skip", required = false) final Integer skip,
+            @RequestParam(value = "limit", required = false) final Integer limit) {
 
-        // TODO: temporal solution. Should be replaced with query builder or proper JPQL
-        Stream<Document> documentStream = new ArrayList<>(movService.findAllDocuments()).stream();
+        Stream<Document> docStream = new ArrayList<>(movService.findAllDocuments()).stream();
+        if (subCategoryName != null && subCategoryValue != null) {
+            SubCategory toSearch = new SubCategory();
+            toSearch.setName(subCategoryName);
+            toSearch.setValue(subCategoryValue);
+            docStream = docStream.filter(document -> document.getSubCategories().contains(toSearch));
+        }
+        if (postedBy != null)
+            docStream = docStream.filter(document -> document.getPostedBy().getUsername().equals(postedBy));
+        if (category != null)
+            docStream = docStream.filter(document -> document.getCategory().getName().equals(category.toUpperCase()));
         if (theme != null)
-            documentStream = documentStream.filter(document ->
-                    document.getTheme().getName().equals(theme.toUpperCase()));
+            docStream = docStream.filter(document -> document.getTheme().getName().equals(theme.toUpperCase()));
         if (country != null)
-            documentStream = documentStream.filter(document ->
-                    document.getCountry().getName().equals(country));
-        if (documentType != null)
-            documentStream = documentStream.filter(document ->
-                    document.getType().getName().equals(documentType.toUpperCase()));
+            docStream = docStream.filter(document -> document.getCountry().getName().equals(country));
 
-        return documentStream.collect(Collectors.toList());
+        docStream = docStream.sorted(this.sortDocumentBy(sortBy, sortAsc == null ? true : sortAsc));
+
+        if (skip != null)
+            docStream = docStream.skip(skip);
+        if (limit != null)
+            docStream = docStream.limit(limit);
+
+        return docStream.collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -62,15 +81,15 @@ public class DocumentController {
     }
 
 
-    @RequestMapping(value = "/new", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public void saveNewDocument(@RequestBody Document document) {
-        User userCreated = movService.findUserByEmail(document.getUserCreated().getEmail());
-        DocumentType documentType = movService.findDocumentTypeByName(document.getType().getName());
+        User userCreated = movService.findUserByEmail(document.getPostedBy().getEmail());
+        DocumentType documentType = movService.findDocumentTypeByName(document.getCategory().getName());
         Country country = movService.findCountryByName(document.getCountry().getName());
         Theme theme = movService.findThemeByName(document.getTheme().getName());
 
         if (documentType == null) {
-            documentType = document.getType();
+            documentType = document.getCategory();
             movService.saveDocumentType(documentType);
         }
         if (theme == null) {
@@ -78,9 +97,9 @@ public class DocumentController {
             movService.saveTheme(theme);
         }
 
-        document.setUserCreated(userCreated);
+        document.setPostedBy(userCreated);
         document.setUserUpdated(userCreated);
-        document.setType(documentType);
+        document.setCategory(documentType);
         document.setCountry(country);
         document.setTheme(theme);
 
@@ -96,7 +115,24 @@ public class DocumentController {
         }).collect(Collectors.toSet());
         document.setTags(tags);
 
+        Set<SubCategory> subCategories = document.getSubCategories();
+        subCategories = subCategories.stream().map(subCategory -> {
+            SubCategory newSubCategory = movService.findSubCategoryById(subCategory.getId());
+            if (newSubCategory == null) {
+                movService.saveSubCategory(subCategory);
+                return subCategory;
+            } else return newSubCategory;
+        }).collect(Collectors.toSet());
+        document.setSubCategories(subCategories);
+
         movService.saveDocument(document);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void removeDocument(@PathVariable("id") Long id) {
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(id);
+        movService.removeSubCategory(subCategory);
     }
 
     @RequestMapping(value = "/upload/{id}", method = RequestMethod.POST)
@@ -104,7 +140,7 @@ public class DocumentController {
                                    @RequestParam("file") MultipartFile file) {
         Document document = movService.findDocumentById(id);
         String path = String.format("/%s/%s/%s/%s.%s", document.getCountry().getName(), document.getTheme().getName(),
-                document.getType().getName(), document.getTitle(), document.getFileExtension());
+                document.getCategory().getName(), document.getName(), document.getFileExtension());
 
         Path uploadFile = Paths.get("temp" + path);
 
@@ -131,7 +167,7 @@ public class DocumentController {
     public void getFile(@PathVariable("id") Long id, HttpServletResponse response) {
         Document document = movService.findDocumentById(id);
         String path = String.format("/%s/%s/%s/%s.%s", document.getCountry().getName(), document.getTheme().getName(),
-                document.getType().getName(), document.getTitle(), document.getFileExtension());
+                document.getCategory().getName(), document.getName(), document.getFileExtension());
 
         try {
             OutputStream outputStream = response.getOutputStream();
@@ -139,6 +175,21 @@ public class DocumentController {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             throw new RuntimeException(e);
+        }
+    }
+
+    private Comparator<Document> sortDocumentBy(String sortBy, boolean asc) {
+        sortBy = sortBy == null ? "DATE_MODIFIED" : sortBy;
+        switch (sortBy.toUpperCase()) {
+            case "NAME":
+                if (asc) return Comparator.comparing(Document::getName);
+                else return Comparator.comparing(Document::getName, Comparator.reverseOrder());
+            case "DATE_CREATED":
+                if (asc) return Comparator.comparing(MonitoredEntity::getDateCreated);
+                else return Comparator.comparing(MonitoredEntity::getDateCreated, Comparator.reverseOrder());
+            default:
+                if (asc) return Comparator.comparing(MonitoredEntity::getDateModified);
+                else return Comparator.comparing(MonitoredEntity::getDateModified, Comparator.reverseOrder());
         }
     }
 }

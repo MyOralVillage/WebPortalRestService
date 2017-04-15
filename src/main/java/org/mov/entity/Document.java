@@ -6,7 +6,7 @@ import java.util.Set;
 @Entity
 public class Document extends MonitoredEntity {
     @Column(name = "TITLE", nullable = false, unique = true)
-    private String title;
+    private String name;
 
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
@@ -16,7 +16,7 @@ public class Document extends MonitoredEntity {
 
     @ManyToOne
     @JoinColumn(name = "TYPE_ID", nullable = false)
-    private DocumentType type;
+    private DocumentType category;
 
     @ManyToOne
     @JoinColumn(name = "COUNTRY_ID", nullable = false)
@@ -27,17 +27,23 @@ public class Document extends MonitoredEntity {
     private Theme theme;
 
     @ManyToMany
+    @JoinTable(name = "DocumentSubCategory",
+            joinColumns = @JoinColumn(name = "DOCUMENT_ID", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "SUB_CAT_ID", nullable = false))
+    private Set<SubCategory> subCategories;
+
+    @ManyToMany
     @JoinTable(name = "DocumentTag",
             joinColumns = @JoinColumn(name = "DOCUMENT_ID", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "TAG_ID", nullable = false))
     private Set<Tag> tags;
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -56,12 +62,12 @@ public class Document extends MonitoredEntity {
         this.fileExtension = fileExtension;
     }
 
-    public DocumentType getType() {
-        return type;
+    public DocumentType getCategory() {
+        return category;
     }
 
-    public void setType(DocumentType type) {
-        this.type = type;
+    public void setCategory(DocumentType category) {
+        this.category = category;
     }
 
     public Country getCountry() {
@@ -78,6 +84,14 @@ public class Document extends MonitoredEntity {
 
     public void setTheme(Theme theme) {
         this.theme = theme;
+    }
+
+    public Set<SubCategory> getSubCategories() {
+        return subCategories;
+    }
+
+    public void setSubCategories(Set<SubCategory> subCategories) {
+        this.subCategories = subCategories;
     }
 
     public Set<Tag> getTags() {
