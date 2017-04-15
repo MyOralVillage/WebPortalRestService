@@ -1,6 +1,7 @@
 package org.mov.config.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mov.entity.Role;
 import org.mov.model.auth.RestAuthenticationEntryPoint;
 import org.mov.model.auth.ajax.AjaxAuthenticationProvider;
 import org.mov.model.auth.ajax.AjaxLoginProcessingFilter;
@@ -112,7 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(TOKEN_REFRESH_ENTRY_POINT).permitAll() // Token refresh end-point
                 .and()
                 .authorizeRequests()
-                .antMatchers(TOKEN_BASED_AUTH_ENTRY_POINT).authenticated() // Protected API End-points
+                .antMatchers(TOKEN_BASED_AUTH_ENTRY_POINT).hasAuthority(Role.ADMIN.authority()) // Protected API End-points
                 .and()
                 .addFilterBefore(buildAjaxLoginProcessingFilter(),
                         UsernamePasswordAuthenticationFilter.class)
