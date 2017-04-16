@@ -11,7 +11,5 @@ public interface SubCategoryRepository {
 
     SubCategory findSubCategoryById(Long id);
 
-    SubCategory findSubcategoryByName(String name);
-
     Collection<SubCategory> findAllSubCategories();
 }

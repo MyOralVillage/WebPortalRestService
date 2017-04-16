@@ -197,11 +197,6 @@ public class MOVServiceImpl implements MOVService {
     }
 
     @Override
-    public SubCategory findSubcategoryByName(String name) {
-        return subCategoryRepository.findSubcategoryByName(name);
-    }
-
-    @Override
     public Collection<SubCategory> findAllSubCategories() {
         return subCategoryRepository.findAllSubCategories();
     }
