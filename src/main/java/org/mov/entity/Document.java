@@ -11,6 +11,9 @@ public class Document extends MonitoredEntity {
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
+    @Column(name = "FILE_URL", nullable = false)
+    private String fileUrl;
+    
     @Column(name = "FILE_EXTENSION", nullable = false)
     private String fileExtension;
 
@@ -52,6 +55,14 @@ public class Document extends MonitoredEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 
     public String getFileExtension() {

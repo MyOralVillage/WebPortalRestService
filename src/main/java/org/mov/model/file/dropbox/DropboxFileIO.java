@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class DropboxFileIO implements FileIO {
     private static final Logger LOGGER = LoggerFactory.getLogger(DropboxFileIO.class);
-
+    private static final 
     private long chunckedUploadSize;
     private int chunckedUploadMaxAttempts;
 
@@ -41,6 +41,23 @@ public class DropboxFileIO implements FileIO {
     public void downloadFile(OutputStream outputStream, String path) throws Exception {
         this.client.files().downloadBuilder(path).download(outputStream);
     }
+
+    @Override
+	public String getSharedLink(String filePath) throws Exception {
+		SharedLinkMetadata slm = null;
+		try {
+			ListSharedLinksResult result = this.client.sharing().listSharedLinksBuilder().withPath(filePath)
+					.withDirectOnly(true).start();
+			slm = result.getLinks().get(0);
+		} catch (SharedLinkErrorException e) {
+			slm = this.client.sharing().createSharedLinkWithSettings(filePath,
+					SharedLinkSettings.newBuilder().withRequestedVisibility(RequestedVisibility.PUBLIC).build());
+		}
+		String url = slm.getUrl();
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url).host("dl.dropboxusercontent.com")
+				.queryParam("raw", 1).queryParam("dl", 0);
+		return uriBuilder.build().encode().toUriString();
+	}
 
     private void singleFileUpload(File fileToUpload, String dropboxPath) throws Exception {
         try (InputStream in = new FileInputStream(fileToUpload)) {

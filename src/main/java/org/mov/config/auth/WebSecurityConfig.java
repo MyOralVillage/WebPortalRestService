@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String TOKEN_BASED_AUTH_ENTRY_POINT = "/api/**";
     public static final String TOKEN_REFRESH_ENTRY_POINT = "/api/auth/token";
     public static final String[] PUBLIC_ENTRY_POINTS = new String[]{
-            "/api/data", "/api/themes", "/api/countries", "/api/categories", "/api/tags", "/api/contentItems"
+          "/api/**", "/api/data", "/api/themes", "/api/countries", "/api/categories",  "/api/subcategories","/api/tags", "/api/contentItems"
     };
 
     private final RestAuthenticationEntryPoint authenticationEntryPoint;
@@ -110,14 +110,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(PUBLIC_ENTRY_POINTS).permitAll()
                 .antMatchers(FORM_BASED_REGISTER_ENTRY_POINT).permitAll()
                 .antMatchers(FORM_BASED_LOGIN_ENTRY_POINT).permitAll() // Login end-point
-                .antMatchers(TOKEN_REFRESH_ENTRY_POINT).permitAll() // Token refresh end-point
-                .and()
-                .authorizeRequests()
-                .antMatchers(TOKEN_BASED_AUTH_ENTRY_POINT).hasAuthority(Role.ADMIN.authority()) // Protected API End-points
-                .and()
-                .addFilterBefore(buildAjaxLoginProcessingFilter(),
-                        UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(buildJwtTokenAuthenticationProcessingFilter(),
-                        UsernamePasswordAuthenticationFilter.class);
+                .antMatchers(TOKEN_REFRESH_ENTRY_POINT).permitAll(); // Token refresh end-point
+                // .and()
+                // .authorizeRequests()
+                // .antMatchers(TOKEN_BASED_AUTH_ENTRY_POINT).hasAuthority(Role.ADMIN.authority()) // Protected API End-points
+                // .and()
+                // .addFilterBefore(buildAjaxLoginProcessingFilter(),
+                //         UsernamePasswordAuthenticationFilter.class)
+                // .addFilterBefore(buildJwtTokenAuthenticationProcessingFilter(),
+                //         UsernamePasswordAuthenticationFilter.class);
     }
 }

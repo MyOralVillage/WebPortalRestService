@@ -7,4 +7,6 @@ public interface FileIO {
     void uploadFile(File fileToUpload, String path) throws Exception;
 
     void downloadFile(OutputStream outputStream, String path) throws Exception;
+
+    String getSharedLink(String filePath) throws Exception;
 }

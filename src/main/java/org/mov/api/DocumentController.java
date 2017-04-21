@@ -80,6 +80,60 @@ public class DocumentController {
         return movService.findDocumentById(id);
     }
 
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+	public void saveNewDocument(@RequestBody NewDocument newDocument) {
+		User userCreated = movService.findUserByUsername(newDocument.getPostedBy());
+		DocumentType documentType = movService.findDocumentTypeByName(newDocument.getCategory());
+		Country country = movService.findCountryByName(newDocument.getCountry());
+		Theme theme = movService.findThemeByName(newDocument.getTheme());
+
+		if (documentType == null) {
+			DocumentType category = new DocumentType(newDocument.getCategory());
+			documentType = category;
+			movService.saveDocumentType(documentType);
+		}
+		if (theme == null) {
+			Theme newTheme = new Theme(newDocument.getTheme());
+			theme = newTheme;
+			movService.saveTheme(theme);
+		}
+
+		Document document = new Document();
+
+		document.setPostedBy(userCreated);
+		document.setUserUpdated(userCreated);
+		document.setCategory(documentType);
+		document.setCountry(country);
+		document.setTheme(theme);
+		document.setDescription(newDocument.getDescription());
+		
+		Set<String> tagNames = newDocument.getTags();
+		
+		Set<Tag> tagSet = tagNames.stream().map((s) -> {		
+			Tag t = movService.findTagByName(s);
+			if (t == null) {
+				Tag newTag = new Tag(s);
+				movService.saveTag(newTag);
+				return newTag;
+			} else {
+				return t;
+			}
+		}).collect(Collectors.toSet());
+		
+		Set<SubCategory> subCategories = newDocument.getSubCategories();
+		subCategories = subCategories.stream().map(subCategory -> {
+			SubCategory newSubCategory = movService.findSubCategoryById(subCategory.getId());
+			if (newSubCategory == null) {
+				movService.saveSubCategory(subCategory);
+				return subCategory;
+			} else
+				return newSubCategory;
+		}).collect(Collectors.toSet());
+		
+		document.setTags(tagSet);
+		document.setSubCategories(subCategories);
+		movService.saveDocument(document);
+	}
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public void saveNewDocument(@RequestBody Document document) {
@@ -150,6 +204,7 @@ public class DocumentController {
             Files.createFile(uploadFile);
             file.transferTo(uploadFile.toAbsolutePath().toFile());
             fileIoHandler.uploadFile(uploadFile.toFile(), path);
+            document.setFileUrl(fileIoHandler.getSharedLink(path));
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             throw new RuntimeException(e);
